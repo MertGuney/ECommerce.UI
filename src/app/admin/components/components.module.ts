@@ -6,7 +6,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 
-
 @NgModule({
   declarations: [],
   imports: [
@@ -14,7 +13,7 @@ import { CommonModule } from '@angular/common';
     ProductsModule,
     OrdersModule,
     CustomersModule,
-    DashboardModule
+    DashboardModule,
   ]
 })
 export class ComponentsModule { }
