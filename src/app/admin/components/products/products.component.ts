@@ -1,7 +1,8 @@
+import { ListComponent } from './list/list.component';
+import { Create_Product } from 'src/app/contracts/create_product';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BaseComponent, SpinnerType } from './../../../base/base.component';
-import { Component, OnInit } from '@angular/core';
-import { HttpClientService } from 'src/app/services/common/http-client.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-products',
@@ -9,16 +10,15 @@ import { HttpClientService } from 'src/app/services/common/http-client.service';
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent extends BaseComponent implements OnInit {
-  constructor(
-    spinner: NgxSpinnerService,
-    private httpClientService: HttpClientService
-  ) {
+  constructor(spinner: NgxSpinnerService) {
     super(spinner);
   }
   ngOnInit(): void {
     this.showSpinner(SpinnerType.Ball);
-    this.httpClientService
-      .get({ controller: 'products' })
-      .subscribe((data) => console.log(data));
+  }
+
+  @ViewChild(ListComponent) listComponents: ListComponent;
+  createdProduct(createdProduct: Create_Product) {
+    this.listComponents.getProducts();
   }
 }

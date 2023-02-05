@@ -6,8 +6,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { CreateComponent } from './create/create.component';
 import { ListComponent } from './list/list.component';
 import { MatInputModule } from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
-
+import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 @NgModule({
   declarations: [
     ProductsComponent,
@@ -17,8 +18,10 @@ import {MatButtonModule} from '@angular/material/button';
   imports: [
     CommonModule,
     MatInputModule,
+    MatTableModule,
     MatButtonModule,
     MatSidenavModule,
+    MatPaginatorModule,
     RouterModule.forChild([
       { path: "", component: ProductsComponent }
     ])

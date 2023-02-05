@@ -12,6 +12,6 @@ export class AppComponent implements OnInit {
   constructor() {}
   ngOnInit(): void {}
 }
-$.get('https://localhost:7278/api/products', (data: any) => {
-  console.log(data);
-});
+// $.get('https://localhost:7278/api/products', (data: any) => {
+//   console.log(data);
+// });

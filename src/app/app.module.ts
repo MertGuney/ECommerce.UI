@@ -26,10 +26,10 @@ import { HttpClientModule } from '@angular/common/http';
   providers: [
     {
       provide: 'baseUrl',
-      useValue: 'https://localhost:7278/api/',
+      useValue: 'https://localhost:7278/api',
       multi: true,
     },
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
