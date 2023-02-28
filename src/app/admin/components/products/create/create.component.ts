@@ -1,3 +1,4 @@
+import { FileUploadOptions } from './../../../../services/common/file-upload/file-upload.component';
 import { AlertifyService, MessageType, Position } from './../../../../services/admin/alertify.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BaseComponent, SpinnerType } from './../../../../base/base.component';
@@ -18,6 +19,13 @@ export class CreateComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
   }
   @Output() createdProduct: EventEmitter<Create_Product> = new EventEmitter();
+  @Output() fileUploadOptions: Partial<FileUploadOptions> = {
+    action: "upload",
+    controller: "products",
+    explanation: "Select pictures",
+    isAdminPage: true,
+    accept:".png, .jgp, .jgep"
+  };
 
   create(name: HTMLInputElement, stock: HTMLInputElement, price: HTMLInputElement) {
     this.showSpinner(SpinnerType.Ball);
