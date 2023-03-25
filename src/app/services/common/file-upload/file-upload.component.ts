@@ -1,3 +1,5 @@
+import { FileUploadDialogComponent, FileUploadDialogState } from './../../../dialogs/file-upload-dialog/file-upload-dialog.component';
+import { DialogService } from './../dialog.service';
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from './../../ui/custom-toastr.service';
 import { AlertifyService, MessageType, Position } from './../../admin/alertify.service';
 import { HttpHeaders, HttpErrorResponse } from '@angular/common/http';
@@ -15,7 +17,8 @@ export class FileUploadComponent {
 
   constructor(private httpClientService: HttpClientService,
     private alertify: AlertifyService,
-    private customToastrService: CustomToastrService) { }
+    private customToastrService: CustomToastrService,
+    private dialogService: DialogService) { }
 
   @Input() options: Partial<FileUploadOptions>;
 
@@ -29,40 +32,46 @@ export class FileUploadComponent {
         fileData.append(_file.name, _file, file.relativePath);
       })
     }
-    this.httpClientService.post({
-      controller: this.options.controller,
-      action: this.options.action,
-      queryString: this.options.queryString,
-      headers: new HttpHeaders({ "responseType": "blob" })
-    }, fileData).subscribe(data => {
-      const message: string = "Files uploaded successfully";
-      if (this.options.isAdminPage) {
-        this.alertify.message(message, {
-          dismissOther: true,
-          messageType: MessageType.Success,
-          position: Position.TopRight
-        })
-      } else {
-        this.customToastrService.message(message, "Success", {
-          messageType: ToastrMessageType.Success,
-          position: ToastrPosition.TopRight
-        })
+    this.dialogService.openDialog({
+      componentType: FileUploadDialogComponent,
+      data: FileUploadDialogState.Yes,
+      afterClosed: () => {
+        this.httpClientService.post({
+          controller: this.options.controller,
+          action: this.options.action,
+          queryString: this.options.queryString,
+          headers: new HttpHeaders({ "responseType": "blob" })
+        }, fileData).subscribe(data => {
+          const message: string = "Files uploaded successfully";
+          if (this.options.isAdminPage) {
+            this.alertify.message(message, {
+              dismissOther: true,
+              messageType: MessageType.Success,
+              position: Position.TopRight
+            })
+          } else {
+            this.customToastrService.message(message, "Success", {
+              messageType: ToastrMessageType.Success,
+              position: ToastrPosition.TopRight
+            })
+          }
+        }, (errorResponse: HttpErrorResponse) => {
+          const message: string = "An Error occurred while files uploading";
+          if (this.options.isAdminPage) {
+            this.alertify.message(message, {
+              dismissOther: true,
+              messageType: MessageType.Error,
+              position: Position.TopRight
+            })
+          } else {
+            this.customToastrService.message(message, "Failed", {
+              messageType: ToastrMessageType.Error,
+              position: ToastrPosition.TopRight
+            })
+          }
+        });
       }
-    }, (errorResponse: HttpErrorResponse) => {
-      const message: string = "An Error occurred while files uploading";
-      if (this.options.isAdminPage) {
-        this.alertify.message(message, {
-          dismissOther: true,
-          messageType: MessageType.Error,
-          position: Position.TopRight
-        })
-      } else {
-        this.customToastrService.message(message, "Failed", {
-          messageType: ToastrMessageType.Error,
-          position: ToastrPosition.TopRight
-        })
-      }
-    });
+    })
   }
 }
 export class FileUploadOptions {

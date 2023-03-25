@@ -1,3 +1,4 @@
+import { DialogModule } from './../../../dialogs/dialog.module';
 import { FileUploadModule } from './../../../services/common/file-upload/file-upload.module';
 import { DeleteDirective } from './../../../directives/admin/delete.directive';
 import { RouterModule } from '@angular/router';
@@ -19,8 +20,7 @@ import { DeleteDialogComponent } from 'src/app/dialogs/delete-dialog/delete-dial
     ProductsComponent,
     CreateComponent,
     ListComponent,
-    DeleteDirective,
-    DeleteDialogComponent
+    DeleteDirective
   ],
   imports: [
     CommonModule,
@@ -31,6 +31,7 @@ import { DeleteDialogComponent } from 'src/app/dialogs/delete-dialog/delete-dial
     MatSidenavModule,
     MatPaginatorModule,
     FileUploadModule,
+    DialogModule,
     RouterModule.forChild([
       { path: "", component: ProductsComponent }
     ])
