@@ -1,3 +1,5 @@
+import { SpinnerType } from './../../../base/base.component';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { FileUploadDialogComponent, FileUploadDialogState } from './../../../dialogs/file-upload-dialog/file-upload-dialog.component';
 import { DialogService } from './../dialog.service';
 import { CustomToastrService, ToastrMessageType, ToastrPosition } from './../../ui/custom-toastr.service';
@@ -18,7 +20,8 @@ export class FileUploadComponent {
   constructor(private httpClientService: HttpClientService,
     private alertify: AlertifyService,
     private customToastrService: CustomToastrService,
-    private dialogService: DialogService) { }
+    private dialogService: DialogService,
+    private spinner: NgxSpinnerService) { }
 
   @Input() options: Partial<FileUploadOptions>;
 
@@ -36,6 +39,7 @@ export class FileUploadComponent {
       componentType: FileUploadDialogComponent,
       data: FileUploadDialogState.Yes,
       afterClosed: () => {
+        this.spinner.show(SpinnerType.Ball)
         this.httpClientService.post({
           controller: this.options.controller,
           action: this.options.action,
@@ -43,6 +47,7 @@ export class FileUploadComponent {
           headers: new HttpHeaders({ "responseType": "blob" })
         }, fileData).subscribe(data => {
           const message: string = "Files uploaded successfully";
+          this.spinner.hide(SpinnerType.Ball)
           if (this.options.isAdminPage) {
             this.alertify.message(message, {
               dismissOther: true,
@@ -57,6 +62,7 @@ export class FileUploadComponent {
           }
         }, (errorResponse: HttpErrorResponse) => {
           const message: string = "An Error occurred while files uploading";
+          this.spinner.hide(SpinnerType.Ball);
           if (this.options.isAdminPage) {
             this.alertify.message(message, {
               dismissOther: true,
